@@ -9,7 +9,7 @@
         <h1
           class="text-lg md:text-2xl font-extrabold uppercase text-center md:text-left"
         >
-          Pollacheial Networks Tech
+          Pollacheial Network Tech
         </h1>
       </div>
       <nav
@@ -118,7 +118,7 @@
               <img
                 :src="client.logo"
                 alt="logo"
-                class="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-cover"
+                class="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain"
               />
               <h1 class="text-base sm:text-lg md:text-xl font-bold capitalize">
                 {{ client.nama }}
@@ -336,22 +336,26 @@
               href="mailto:pollacheialnetwok@gmail.com"
               class="underline hover:text-gray-600"
             >
-              pollacheialnetwok@gmail.com
+              pollacheialnetwork@gmail.com
             </a>
           </p>
           <p><strong>Phone:</strong> 0852-5385-6669 (Daffa)</p>
           <p>
-            <strong>Website:</strong>
-            <a
-              href="https://pollacheialnetworks.com"
-              target="_blank"
-              class="underline hover:text-gray-600"
+            <a href="https://www.instagram.com/p.networktech/" target="_blank"
+              ><p class="hover:text-blue-800">
+                <strong>Instagram:</strong> @p.networktech
+              </p></a
             >
-              pollacheialnetworks.com
-            </a>
           </p>
-          <p><strong>Instagram:</strong> @plcnwktech</p>
-          <p><strong>LinkedIn:</strong> pollacheialnetwork</p>
+          <p>
+            <a
+              href="https://www.linkedin.com/company/cv-pollacheial-network-tech/"
+              target="_blank"
+              ><p class="hover:text-blue-800">
+                <strong>LinkedIn:</strong> pollacheialnetwork
+              </p></a
+            >
+          </p>
         </div>
         <!-- Form -->
         <div class="w-full lg:w-1/3">
@@ -400,7 +404,7 @@
     <footer
       class="p-4 md:p-6 text-center uppercase font-bold text-sm sm:text-base"
     >
-      © 2025 Pollacheial Networks Tech — All Rights Reserved
+      © 2025 Pollacheial Network Tech — All Rights Reserved
     </footer>
   </div>
 </template>
