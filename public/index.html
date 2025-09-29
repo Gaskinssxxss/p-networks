@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>logos.ico" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+
+    <meta
+      name="description"
+      content="Pollacheial Networks Tech, the theatrical arts of geek's"
+    />
+    <meta
+      name="keywords"
+      content="pollacheial, pollacheial networks, plcnwks, pollcheial network tech, lpkni, dinamika mbojo, bima, kota bima, rumah gerak, nusa vacation"
+    />
+    <meta name="author" content="POLLACHEIAL NETWORKS TECH" />
+  </head>
+  <body>
+    <noscript>
+      <strong>
+        We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
+        properly without JavaScript enabled. Please enable it to continue.
+      </strong>
+    </noscript>
+
+    <!-- Container Google Translate -->
+    <div id="google_translate_element"></div>
+
+    <div id="app"></div>
+
+    <style>
+      /* Bungkus translate di pojok kanan atas */
+      #google_translate_element {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 9999;
+        background: white;
+        border: 2px solid #000;
+        padding: 4px 8px;
+        font-size: 14px;
+        border-radius: 6px;
+        box-shadow: 2px 2px 0px #000;
+      }
+
+      /* Hilangkan background bawaan Google */
+      .goog-te-banner-frame.skiptranslate,
+      .goog-te-gadget-simple {
+        background: transparent !important;
+        border: none !important;
+      }
+
+      /* Buang margin yang kadang bikin layout geser */
+      body {
+        top: 0px !important;
+      }
+
+      /* Dropdown kecil & clean */
+      .goog-te-gadget-simple span {
+        font-size: 14px !important;
+        color: #000 !important;
+        font-weight: bold;
+      }
+
+      /* Hilangkan teks "Powered by Google Translate" */
+      .goog-logo-link {
+        display: none !important;
+      }
+      .goog-te-gadget {
+        font-size: 0;
+      }
+    </style>
+
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: "en", // bahasa default
+            includedLanguages: "id,en,ja,fr,de", // bahasa aktif
+            autoDisplay: false,
+          },
+          "google_translate_element"
+        );
+
+        // jalankan auto detect IP
+        detectUserLanguage();
+      }
+
+      function detectUserLanguage() {
+        fetch("https://ipapi.co/json/")
+          .then((res) => res.json())
+          .then((data) => {
+            const country = data.country_code;
+            let lang = "en"; // default
+
+            const mapLang = {
+              ID: "id",
+              JP: "ja",
+              FR: "fr",
+              DE: "de",
+            };
+
+            if (mapLang[country]) {
+              lang = mapLang[country];
+            }
+
+            if (lang !== "en") {
+              autoTranslate(lang);
+            }
+          })
+          .catch((err) => {
+            console.error("Geo error:", err);
+            // fallback → Indonesia
+            autoTranslate("id");
+          });
+      }
+
+      function autoTranslate(lang) {
+        let attempts = 10;
+        let count = 0;
+
+        function trigger() {
+          const frame = document.querySelector(".goog-te-menu-frame");
+          if (!frame) {
+            if (count < attempts) {
+              count++;
+              setTimeout(trigger, 500);
+            }
+            return;
+          }
+
+          const frameDoc =
+            frame.contentDocument || frame.contentWindow.document;
+          const langEl = [
+            ...frameDoc.querySelectorAll(".goog-te-menu2-item span.text"),
+          ].find((e) => e.innerText.toLowerCase().includes(lang));
+
+          if (langEl) langEl.click();
+        }
+
+        trigger();
+      }
+    </script>
+
+    <script
+      type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
+  </body>
+</html>
