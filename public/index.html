@@ -25,46 +25,61 @@
       </strong>
     </noscript>
 
-    <!-- Container Google Translate -->
-    <div id="google_translate_element"></div>
+    <!-- Floating Translate Button -->
+    <div id="translate-toggle">🌐</div>
+    <div id="google_translate_element" class="hidden"></div>
 
     <div id="app"></div>
 
     <style>
-      /* Bungkus translate di pojok kanan atas */
+      /* Tombol toggle */
+      #translate-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        background: black;
+        color: white;
+        border: 2px solid #000;
+        padding: 10px 14px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 18px;
+        box-shadow: 2px 2px 0px #000;
+        transition: background 0.3s, color 0.3s;
+      }
+      #translate-toggle:hover {
+        background: white;
+        color: black;
+      }
+
+      /* Kontainer dropdown */
       #google_translate_element {
         position: fixed;
-        top: 10px;
-        right: 10px;
+        bottom: 60px;
+        right: 20px;
         z-index: 9999;
         background: white;
         border: 2px solid #000;
-        padding: 4px 8px;
-        font-size: 14px;
+        padding: 6px 10px;
         border-radius: 6px;
         box-shadow: 2px 2px 0px #000;
       }
 
-      /* Hilangkan background bawaan Google */
+      /* Hilangkan background & teks bawaan */
       .goog-te-banner-frame.skiptranslate,
       .goog-te-gadget-simple {
         background: transparent !important;
         border: none !important;
       }
-
-      /* Buang margin yang kadang bikin layout geser */
       body {
         top: 0px !important;
       }
-
-      /* Dropdown kecil & clean */
       .goog-te-gadget-simple span {
         font-size: 14px !important;
         color: #000 !important;
         font-weight: bold;
       }
-
-      /* Hilangkan teks "Powered by Google Translate" */
       .goog-logo-link {
         display: none !important;
       }
@@ -78,50 +93,44 @@
       function googleTranslateElementInit() {
         new google.translate.TranslateElement(
           {
-            pageLanguage: "en", // bahasa default
-            includedLanguages: "id,en,ja,fr,de", // bahasa aktif
+            pageLanguage: "en",
+            includedLanguages: "id,en,ja,fr,de",
             autoDisplay: false,
           },
           "google_translate_element"
         );
 
-        // jalankan auto detect IP
         detectUserLanguage();
       }
 
+      // Toggle Show/Hide Translate Box
+      document.addEventListener("DOMContentLoaded", () => {
+        const toggleBtn = document.getElementById("translate-toggle");
+        const box = document.getElementById("google_translate_element");
+        toggleBtn.addEventListener("click", () => {
+          box.classList.toggle("hidden");
+        });
+      });
+
+      // Auto Detect IP
       function detectUserLanguage() {
         fetch("https://ipapi.co/json/")
           .then((res) => res.json())
           .then((data) => {
             const country = data.country_code;
-            let lang = "en"; // default
-
-            const mapLang = {
-              ID: "id",
-              JP: "ja",
-              FR: "fr",
-              DE: "de",
-            };
-
-            if (mapLang[country]) {
-              lang = mapLang[country];
-            }
-
-            if (lang !== "en") {
-              autoTranslate(lang);
-            }
+            let lang = "en";
+            const mapLang = { ID: "id", JP: "ja", FR: "fr", DE: "de" };
+            if (mapLang[country]) lang = mapLang[country];
+            if (lang !== "en") autoTranslate(lang);
           })
-          .catch((err) => {
-            console.error("Geo error:", err);
-            // fallback → Indonesia
-            autoTranslate("id");
+          .catch(() => {
+            autoTranslate("id"); // fallback
           });
       }
 
       function autoTranslate(lang) {
         let attempts = 10;
         let count = 0;
-
         function trigger() {
           const frame = document.querySelector(".goog-te-menu-frame");
           if (!frame) {
@@ -131,16 +140,13 @@
             }
             return;
           }
-
           const frameDoc =
             frame.contentDocument || frame.contentWindow.document;
           const langEl = [
             ...frameDoc.querySelectorAll(".goog-te-menu2-item span.text"),
           ].find((e) => e.innerText.toLowerCase().includes(lang));
-
           if (langEl) langEl.click();
         }
-
         trigger();
       }
     </script>
